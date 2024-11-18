@@ -1,0 +1,87 @@
+#mainMenu {
+    display: block;
+    visibility: visible;
+}
+
+.main-menu {
+    border: 3px solid black;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    z-index: 1;
+}
+
+.menu-header {
+    border: 3px solid black;
+    position: absolute;
+    width: 100%;
+    height: 15%;
+    background-color: red;
+    text-align: center;
+}
+
+.title {
+    margin: 0;
+    font-size: 150px;
+    width: auto;
+    height: auto;
+    display: block;
+}
+
+.menu-page {
+    border: 3px solid black;
+    position: absolute;
+    top: 15%;
+    width: 100%;
+    height: 85%;
+    background-color: lightblue;
+}
+
+.menu {
+    border: 3px solid black;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    top: 10%;
+    bottom: 10%;
+    left: 10%;
+    right: 10%;
+    width: 80%;
+    height: 80%;
+    background-color: pink;
+    
+}
+
+.menu-button-group {
+    display: absolute;
+    vertical-align: middle;
+    margin-left: 15%;
+    margin-top: 10%;
+    width: auto;
+    height: 50%;
+}
+
+
+.menu-button {
+    display: flex;
+    width: 500px;
+    height: 200px;
+    font-family: Arial;
+    font-size: 100px;
+    text-align: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+    user-select: none;
+    border: none;
+    background-color: transparent;
+}
+
+.menu-button:hover {
+    opacity: 0.6;
+}
+
+.menu-button:active {
+    opacity: 0.3;
+}

@@ -1,0 +1,56 @@
+
+
+#pauseGame {
+    display: none;
+    visibility: visible;
+}
+
+
+.pause-game {
+    position: absolute;
+    border: 3px solid black;
+    margin-top: 200px;
+    width: 400px;
+    height: 700px;
+    top: 30%;
+    left: 48%;
+    margin-top: -50px;
+    margin-left: -50px;
+    background-color: lightgreen;
+    z-index: 2;
+}
+
+.pause-close-button:hover {
+    opacity: 0.6;
+}
+
+.pause-close-button:active {
+    opacity: 0.3;
+}
+
+.pause-options {
+    border: 3px solid black;
+    position: absolute;
+    display: block;
+    width: 400px;
+    height: 100%;
+    background-color: lightcoral;
+}
+
+.pause-button {
+    position: relative;
+    width: 250px;
+    height: 100px;
+    font-size: 50px;
+    left: 50px;
+    margin-top: 40px;
+    margin-bottom: 0;
+}
+
+.pause-button:hover {
+    opacity: 0.6;
+}
+
+.pause-button:active {
+    opacity: 0.3;
+}
