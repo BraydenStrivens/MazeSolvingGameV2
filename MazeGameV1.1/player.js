@@ -1,4 +1,6 @@
 
+import { PlayerIcons } from "./utilities.js"
+
 class Player {
     constructor(game) {
         this.game = game
@@ -18,14 +20,13 @@ class Player {
 
         // this.playerRadius = (this.game.maze.size / this.game.maze.rows) / 2
         this.playerRadius = (this.game.maze.size / this.game.maze.rows) / 3
-        console.log("PLAYER RADIUS: ", this.playerRadius)
 
 
         this.spriteWidth = 200
         this.spriteHeight = 200
         this.cellSize = this.game.maze.size / this.game.maze.rows
-        this.playerImage = new Image(this.cellSize)
-        this.playerImage.src = "./assets/playerIcons/rainbow-dot.png"
+        this.playerImage = new Image(this.spriteWidth, this.spriteHeight)
+        this.playerImage.src = "./assets/playerIcons/default-icon.png"
         
 
         this.keys = {
@@ -80,6 +81,12 @@ class Player {
         this.cellSize = newCellHeight
     }
 
+    updatePlayerIcon(newIcon) {
+        let iconPath = PlayerIcons[newIcon]
+        this.playerImage = new Image(this.cellSize)
+        this.playerImage.src = `./assets/playerIcons/${iconPath}`
+    }
+
     setPosition(x, y) {
         this.x = x 
         this.y = y
@@ -112,8 +119,6 @@ class Player {
 
         // this.x += this.xVelocity
         // this.y += this.yVelocity
-
-        
     }
 
     render(context) {
@@ -121,21 +126,10 @@ class Player {
     }
 
     drawPlayer(context) {
-        // let radius = 30
-        // console.log("RADIUS:", radius)
-        let centerX = this.x
-        let centerY = this.y
-        // let centerX = this.x
-        // let centerY = this.y
-        // console.log(`CORDS: ${centerX}, ${centerY}`)
-        // context.beginPath()
-        // context.arc(centerX, centerY, this.playerRadius, 0, 2 * Math.PI, false)
-        // context.fillStyle = 'green'
-        // context.fill()
-        // context.lineWidth = 5
-        // context.strokeStyle = "#003300"
 
-        context.drawImage(this.playerImage, 0, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.cellSize, this.cellSize)
+        context.drawImage(this.playerImage, 
+            0, 0, this.spriteWidth, this.spriteHeight, 
+            this.x + (this.cellSize / 6), this.y + (this.cellSize / 6), this.cellSize * 2/3, this.cellSize * 2/3)
     }
 }
 

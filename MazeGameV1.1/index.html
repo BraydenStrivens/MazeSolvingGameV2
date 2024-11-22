@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/styles/play.css" />
     <link rel="stylesheet" href="/styles/pause.css" />
     <link rel="stylesheet" href="/styles/customize.css" />
+    <link rel="stylesheet" href="/styles/game_over.css" />
   </head>
   <body>
     <div id="mainMenu" class="main-menu">
@@ -33,6 +34,8 @@
           </div>
         </div>
       </div>
+
+      <canvas id="testCanvas" class="test-canvas"></canvas>
     </div>
 
     <div id="selectMode" class="select-mode">
@@ -64,6 +67,9 @@
                 <button id="defaultMode" class="game-mode-button">
                     Default
                 </button>
+                <button id="memoryMode" class="game-mode-button">
+                  Memory
+              </button>
                 <button id="franticMode" class="game-mode-button">
                     Frantic
                 </button>
@@ -87,15 +93,25 @@
     <div id="playState" class="play">
       <div class="play-header">
         <div class="timer">
-          0
+          <p id="timer">0</p>
         </div>
         <button id="pauseButton" class="play-pause-button">
           Pause
         </button>
       </div>
       <div class="play-page">
+        <img id="backgroundImage" src="./assets/backgroundImages/default.jfif" alt="">
         <canvas id="gameCanvas" class="game-canvas"></canvas>
 
+      </div>
+    </div>
+
+    <div id="gameOverState" class="game-over">
+      <div class="game-over-header">
+        Game Over!
+      </div>
+      <div id="gameOverInfo" class="game-over-info">
+        <p id="gameOverTimer">0 Seconds</p>
       </div>
     </div>
 
@@ -130,18 +146,18 @@
           <label for="player-icon" class="customize-label">Choose Player Icon:</label>
 
           <select name="player-icon" class="customize-select" id="playerIconSelect">
-            <option value="red">Red</option>
-            <option value="blue">Blue</option>
-            <option value="green">Green</option>
-            <option value="yellow">Yellow</option>
-            <option value="orange">Orange</option>
-            <option value="cyan">Cyan</option>
-            <option value="pink">Pink</option>
-            <option value="purple">Purple</option>
+            <option value="default">Default</option>
+            <option value="default-red">Default-Red</option>
+            <option value="default-blue">Default-Blue</option>
+            <option value="default-green">Default-Green</option>
+            <option value="warm-rainbow">Warm Rainbow</option>
+            <option value="cool-rainbow">Cool Rainbow</option>
+            <option value="rainbow">Rainbow</option>
+            
           </select>
         </div>
         <div class="preview-box">
-
+          <img id="iconPreview" src="./assets/playerIcons/default-icon.png" alt="">
         </div>
       </div>
       <div class="maze-color-select">
@@ -150,13 +166,20 @@
 
           <select name="player-icon" class="customize-select" id="mazeColorSelect">
             <option value="white">White</option>
-            <option value="yellow">Yellow</option>
             <option value="red">Red</option>
             <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="yellow">Yellow</option>
+            <option value="orange">Orange</option>
+            <option value="cyan">Cyan</option>
+            <option value="pink">Pink</option>
+            <option value="purple">Purple</option>
+            <option value="mixed">Mixed</option>
+            <option value="mixed-animated">Mixed Animated</option>
           </select>
         </div>
         <div class="preview-box">
-
+          <img id="mazeColorPreview" src="./assets/previews/white.PNG" alt="">
         </div>
       </div>
       <div class="maze-background-color-select">
@@ -164,14 +187,16 @@
           <label for="player-icon" class="customize-label">Choose Maze Background:</label>
 
           <select name="player-icon" class="customize-select" id="mazeBackgroundColorSelect">
-            <option value="black">Black</option>
-            <option value="galaxy">Galaxy</option>
-            <option value="forest">Forest</option>
-            <option value="mountain">Mountain</option>
+            <option value="default">Default</option>
+            <option value="galaxy1">Galaxy 1</option>
+            <option value="galaxy2">Galaxy 2</option>
+            <option value="clouds">Clouds</option>
+            <option value="futuristicCity">Futuristic</option>
+            <option value="retro">Retro Futuristic</option>
           </select>
         </div>
         <div class="preview-box">
-
+          <img id="backgroundPreview" src="./assets/backgroundImages/default.jfif" alt="">
         </div>
       </div>
       <div class="save-box">
@@ -182,6 +207,7 @@
       </div>
     </div>
 
+    <script type="module" src="./test.js"></script>
     <script type="module" src="./cell.js"></script>
     <script type="module" src="./maze.js"></script>
     <script type="module" src="./game.js"></script>

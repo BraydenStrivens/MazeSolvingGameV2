@@ -1,6 +1,6 @@
 
 import Game from "./game.js"
-import { PlayerColors } from "./utilities.js"
+import { GameModes, PlayerIcons, MazeColors, MazeBackgrounds, GameModeDescriptions } from "./utilities.js"
 
 let game;
 
@@ -24,8 +24,10 @@ window.addEventListener("load", function () {
     game = new Game(mazeCanvas, context)
     game.init()
 
+    $("#modeDescription").html(GameModeDescriptions[game.gameMode])
+
     document.addEventListener("keydown", (event) => {
-        game.maze.move(event, context)
+        if (game.isPaused == false) game.maze.move(event, context)
     });
 
     /* 
@@ -88,10 +90,13 @@ window.addEventListener("load", function () {
     let gameModeButton = $(".game-mode-button")
 
     gameModeButton.click(function() {
-        let ids = ["defaultMode", "franticMode"];
+        let ids = ["defaultMode", "memoryMode", "franticMode"];
 
         ids.forEach((button) => {
             if ($(this).attr("id") == button) {
+                let newGameMode = GameModes[button]
+                $("#modeDescription").html(GameModeDescriptions[newGameMode])
+                game.changeGameMode(newGameMode)
                 $(`#${button}`).css("opacity", "0.5");
             } else {
                 $(`#${button}`).css("opacity", "1");
@@ -104,6 +109,7 @@ window.addEventListener("load", function () {
 
     modeSelectPlayButton.click(function() {
         game.setupMaze(context)
+        game.startGame()
         
         selectModeState.hide()
         playState.show()
@@ -115,6 +121,7 @@ window.addEventListener("load", function () {
     let pauseButton = $("#pauseButton");
 
     pauseButton.click(function() {
+        game.pauseTimer()
         pauseState.show()
     });
 
@@ -128,11 +135,12 @@ window.addEventListener("load", function () {
     let quitButton = $("#pauseQuitButton");
 
     resumeButton.click(function() {
+        game.startTimer()
         pauseState.hide()
     });
     restartButton.click(function() {
-        // TODO
-        console.log("TODO")
+        pauseState.hide()
+        game.restartGame(context)
     });
     pauseSettingsButton.click(function() {
         // TODO
@@ -143,6 +151,7 @@ window.addEventListener("load", function () {
         console.log("TODO")
     });
     quitButton.click(function() {
+        game.endGame()
         location.reload();
         pauseState.hide()
         playState.hide()
@@ -157,32 +166,49 @@ window.addEventListener("load", function () {
     let mazeColorSelectBox = $("#mazeColorSelect");
     let mazeBackgroundColorSelectBox = $("#mazeBackgroundColorSelect");
     let customizeSaveButton = $("#customizeSaveButton");
+    let backgroundImage = document.getElementById("backgroundImage")
+    let iconPreview = document.getElementById("iconPreview")
+    let colorPreview = document.getElementById("mazeColorPreview")
+    let backgroundPreview = document.getElementById("backgroundPreview")
 
     customizeBackArrow.click(function() {
         customizeState.hide()
         mainMenuState.show()
     });
     iconSelectBox.on('change', function() {
-        console.log("TODO")
-        
-        PlayerColors.forEach((color) => {
-            if (color == $(this).val()) {
-                game.maze.updatePlayerColor(color)
-                console.log($(this).val())
+        let keys = Object.keys(PlayerIcons)
+
+        keys.forEach((icon) => {
+            if (icon == $(this).val()) {
+                let path = `./assets/playerIcons/${PlayerIcons[icon]}`
+                iconPreview.src = path
+                game.player.updatePlayerIcon(icon)
             }
         })
-        // TODO
     });
     mazeColorSelectBox.on('change', function() {
-        // TODO
-        console.log("TODO")
+        let keys = Object.keys(MazeColors)
+
+        keys.forEach((color) => {
+            if (color == $(this).val()) {
+                let path = `./assets/previews/${color}.PNG`
+                colorPreview.src = path
+                game.updateWallColor(color)
+            }
+        })
     });
     mazeBackgroundColorSelectBox.on('change', function() {
-        // TODO
-        console.log("TODO")
+        let keys = Object.keys(MazeBackgrounds)
+
+        keys.forEach((background) => {
+            if (background == $(this).val()) {
+                let path = `./assets/backgroundImages/${MazeBackgrounds[background]}`
+                backgroundImage.src = path
+                backgroundPreview.src = path
+            }
+        })
     });
     customizeSaveButton.click(function() {
-        // TODO
         customizeState.hide()
         selectModeState.show()
     });

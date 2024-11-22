@@ -1,6 +1,6 @@
 
 import Cell from "./cell.js"
-import { Colors, DifficultyDimensions } from "./utilities.js"
+import { Colors } from "./utilities.js"
 
 let generation = false
 
@@ -10,12 +10,9 @@ class Maze {
         this.size = size
         this.rows = rows
         this.columns = columns
-        this.cellWallLength = this.size / this.rows
 
         this.grid = []
         this.stack = []
-
-        this.cellsToRotate = []
 
         this.currentCell;
 
@@ -27,36 +24,7 @@ class Maze {
         // this.canvas = this.game.canvas
     }
 
-    verifyUniqueRandomCell(randomCell) {
-      if (this.cellsToRotate.length === 0) return true
-
-      this.cellsToRotate.forEach((cell) => {
-        if (randomCell.equals(cell)) return false
-      })
-
-      return true
-    }
-
-    getRandomCell() {
-      let randomRowIndex = Math.floor(Math.random() * this.rows)
-      let randomColumnIndex = Math.floor(Math.random() * this.columns)
-
-      var randomCell = this.grid[randomRowIndex][randomColumnIndex]
-
-      if (this.verifyUniqueRandomCell(randomCell) === false) randomCell = this.getRandomCell()
-
-      return randomCell
-    }
-
-    selectCellsToRotate() {
-      this.cellsToRotate = []
-      let numberOfRotatingCells = DifficultyDimensions[this.game.difficulty][0]
-
-        for (let index = 0; index < numberOfRotatingCells; index++) {
-          let randomCell = this.getRandomCell()
-          this.cellsToRotate.push(randomCell)
-        }
-    }
+    
 
     setupMaze() {
         for (let row = 0; row < this.rows; row++) {
@@ -64,13 +32,11 @@ class Maze {
 
             for (let column = 0; column < this.columns; column++) {
 
-                let cell = new Cell(row, column, this.grid, this.size, this.cellWallLength)
+                let cell = new Cell(row, column, this.grid, this.size)
                 currentRow.push(cell)
 
-                if (this.wallColor == "mixed") {
-                  let randomColor = Colors[Math.floor(Math.random() * Colors.length)]
-                  this.randomColors.push(randomColor)
-              }
+                let randomColor = Colors[Math.floor(Math.random() * Colors.length)]
+                this.randomColors.push(randomColor)
             }
             this.grid.push(currentRow)
         }
@@ -78,31 +44,6 @@ class Maze {
         // Starting and end point
         this.currentCell = this.grid[0][0]
         this.grid[this.rows - 1][this.columns - 1].isGoal = true
-    }
-
-    rotateCellWalls() {
-      console.log(this.cellsToRotate)
-
-      this.cellsToRotate.forEach((cell) => {
-        let availableWalls = cell.getShownWalls()
-        
-        if (availableWalls[0]) {
-          cell.rotateTopWall()
-          return
-        }
-        if (availableWalls[1]) {
-          cell.rotateRightWall()
-          return
-        }
-        if (availableWalls[2]) {
-          cell.rotateBottomWall()
-          return
-        }
-        if (availableWalls[3]) {
-          cell.rotateLeftWall()
-          return
-        }
-      })
     }
 
     drawGeneratedMaze(context) {
@@ -184,7 +125,7 @@ class Maze {
       
         switch (key) {
           case "ArrowUp":
-            if (!this.currentCell.walls.topWall.isShown) {
+            if (!this.currentCell.walls.topWall) {
               let next = this.grid[row - 1][col];
               if (next.isGoal) {
                 this.game.gameOver()
@@ -197,7 +138,7 @@ class Maze {
             break;
       
           case "ArrowRight":
-            if (!this.currentCell.walls.rightWall.isShown) {
+            if (!this.currentCell.walls.rightWall) {
               let next = this.grid[row][col + 1];
               if (next.isGoal) {
                 this.game.gameOver()
@@ -210,7 +151,7 @@ class Maze {
             break;
       
           case "ArrowDown":
-            if (!this.currentCell.walls.bottomWall.isShown) {
+            if (!this.currentCell.walls.bottomWall) {
               let next = this.grid[row + 1][col];
               if (next.isGoal) {
                 this.game.gameOver()
@@ -223,7 +164,7 @@ class Maze {
             break;
       
           case "ArrowLeft":
-            if (!this.currentCell.walls.leftWall.isShown) {
+            if (!this.currentCell.walls.leftWall) {
               let next = this.grid[row][col - 1];
               if (next.isGoal) {
                 this.game.gameOver()
