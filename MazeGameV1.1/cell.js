@@ -76,7 +76,6 @@ class Cell {
     context.moveTo(x1, y1);
     context.lineTo(x2, y2);
     context.stroke();
-    // console.log(`Start: ${x1}, ${y1} End: ${x2}, ${y2}`)
   }
 
   drawBottomWall(context, x, y, theta) {
@@ -110,8 +109,6 @@ class Cell {
     context.moveTo(x1, y1);
     context.lineTo(x2, y2);
     context.stroke();
-    // console.log(`PI * THETA / 180: ${Math.PI * theta / 180.0}`)
-    // console.log(`COS: ${Math.cos(Math.PI * theta / 180.0)}, SIN: ${Math.sin(Math.PI * theta / 180.0)}`)
   }
 
   // Highlights the current cell on the grid. Columns is once again passed in to set the size of the grid.
@@ -149,9 +146,9 @@ class Cell {
       cell1.walls.rightWall.isShown = false;
       cell2.walls.leftWall.isShown = false;
     }
-    // compares to two cells on x axis
+    // compares to two cells on y axis
     let y = cell1.rowNumber - cell2.rowNumber;
-    // Removes the relevant walls if there is a different on x axis
+    // Removes the relevant walls if there is a different on y axis
     if (y === 1) {
       cell1.walls.topWall.isShown = false;
       cell2.walls.bottomWall.isShown = false;
@@ -192,55 +189,103 @@ class Cell {
   }
 
   rotateTopWall() {
-    if (this.rowNumber != 0) {
+    let topCellRow = this.rowNumber - 1;
+    let topCellColumn = this.columnNumber;
+    let topCell = this.parentGrid[topCellRow][topCellColumn];
+    topCell.walls.bottomWall.isShown = false;
+
+    let leftCell
+    if (this.columnNumber !== 0) {
+      let leftCellRow = this.rowNumber;
+      let leftCellColumn = this.columnNumber - 1;
+      leftCell = this.parentGrid[leftCellRow][leftCellColumn];
+    }
+
+    if (this.walls.topWall.theta <= 90) {
       this.walls.topWall.isRotating = true;
-      if (this.walls.topWall.isRotating && this.walls.topWall.theta !== 90) {
-        this.walls.topWall.theta++;
-      } else {
-        this.walls.topWall.isRotating = false;
-        this.walls.topWall.isShown = false;
-        this.walls.topWall.theta = 0;
-        this.walls.leftWall.isShown = true;
-      }
+      this.walls.topWall.theta++;
+    } else {
+      this.walls.topWall.isRotating = false;
+      this.walls.topWall.isShown = false;
+      this.walls.topWall.theta = 0;
+      this.walls.leftWall.theta = 270
+      this.walls.leftWall.isShown = true;
+      if (this.columnNumber !== 0) leftCell.walls.rightWall.isShown = true;
     }
   }
   rotateRightWall() {
-    if (this.columnNumber != this.parentGrid.length - 1) {
+    let rightCellRow = this.rowNumber;
+    let rightCellColumn = this.columnNumber + 1;
+    let rightCell = this.parentGrid[rightCellRow][rightCellColumn];
+    rightCell.walls.leftWall.isShown = false;
+
+    let topCell
+    if (this.rowNumber !== 0) {
+      let topCellRow = this.rowNumber - 1;
+      let topCellColumn = this.columnNumber;
+      topCell = this.parentGrid[topCellRow][topCellColumn];
+    }
+   
+    if (this.walls.rightWall.theta <= 180) {
       this.walls.rightWall.isRotating = true;
-      if (this.walls.rightWall.isRotating && this.walls.rightWall.theta !== 180) {
-        this.walls.rightWall.theta++;
-      } else {
-        this.walls.rightWall.isRotating = false;
-        this.walls.rightWall.isShown = false;
-        this.walls.rightWall.theta = 90;
-        this.walls.topWall.isShown = true;
-      }
+      this.walls.rightWall.theta++;
+    } else {
+      this.walls.rightWall.isRotating = false;
+      this.walls.rightWall.isShown = false;
+      this.walls.rightWall.theta = 90;
+      this.walls.topWall.theta = 0
+      this.walls.topWall.isShown = true;
+      if (this.rowNumber !== 0) topCell.walls.bottomWall.isShown = true;
     }
   }
   rotateBottomWall() {
-    if (this.rowNumber != this.parentGrid.length - 1) {
+    let bottomCellRow = this.rowNumber + 1;
+    let bottomCellColumn = this.columnNumber;
+    let bottomCell = this.parentGrid[bottomCellRow][bottomCellColumn];
+    bottomCell.walls.topWall.isShown = false;
+
+    let rightCell
+    if (this.rowNumber !== this.parentGrid.length - 1) {
+      let rightCellRow = this.rowNumber;
+      let rightCellColumn = this.columnNumber + 1;
+      rightCell = this.parentGrid[rightCellRow][rightCellColumn];
+    }
+
+    if (this.walls.bottomWall.theta <= 270) {
       this.walls.bottomWall.isRotating = true;
-      if (this.walls.bottomWall.isRotating && this.walls.bottomWall.theta !== 270) {
-        this.walls.bottomWall.theta++;
-      } else {
-        this.walls.bottomWall.isRotating = false;
-        this.walls.bottomWall.isShown = false;
-        this.walls.bottomWall.theta = 180;
-        this.walls.rightWall.isShown = true;
-      }
+      this.walls.bottomWall.theta++;
+    } else {
+      this.walls.bottomWall.isRotating = false;
+      this.walls.bottomWall.isShown = false;
+      this.walls.bottomWall.theta = 180;
+      this.walls.rightWall.theta = 90
+      this.walls.rightWall.isShown = true;
+      if (this.rowNumber !== this.parentGrid.length - 1) rightCell.walls.leftWall.isShown = true;
     }
   }
   rotateLeftWall() {
-    if (this.column != 0) {
+    let leftCellRow = this.rowNumber;
+    let leftCellColumn = this.columnNumber - 1;
+    let leftCell = this.parentGrid[leftCellRow][leftCellColumn];
+    leftCell.walls.rightWall.isShown = false;
+
+    let bottomCell
+    if (this.rowNumber !== this.parentGrid.length - 1) {
+      let bottomCellRow = this.rowNumber + 1;
+      let bottomCellColumn = this.columnNumber;
+      bottomCell = this.parentGrid[bottomCellRow][bottomCellColumn];
+    }
+
+    if (this.walls.leftWall.theta <= 360) {
       this.walls.leftWall.isRotating = true;
-      if (this.walls.leftWall.isRotating && this.walls.leftWall.theta !== 360) {
-        this.walls.leftWall.theta++;
-      } else {
-        this.walls.leftWall.isRotating = false;
-        this.walls.leftWall.isShown = false;
-        this.walls.leftWall.theta = 270;
-        this.walls.bottomWall.isShown = true;
-      }
+      this.walls.leftWall.theta++;
+    } else {
+      this.walls.leftWall.isRotating = false;
+      this.walls.leftWall.isShown = false;
+      this.walls.leftWall.theta = 270;
+      this.walls.bottomWall.theta = 180
+      this.walls.bottomWall.isShown = true;
+      if (this.rowNumber !== this.parentGrid.length - 1) bottomCell.walls.topWall.isShown = true;
     }
   }
 
@@ -299,23 +344,25 @@ class Cell {
   }
 
   getShownWalls() {
-
     let tWall = true ? this.walls.topWall.isShown : false;
     let rWall = true ? this.walls.rightWall.isShown : false;
     let bWall = true ? this.walls.bottomWall.isShown : false;
     let lWall = true ? this.walls.leftWall.isShown : false;
 
-    let shownWalls = [tWall, rWall, bWall, lWall]
+    let shownWalls = [tWall, rWall, bWall, lWall];
 
-    return shownWalls
+    return shownWalls;
   }
 
   equals(otherCell) {
-    if (this.rowNumber == otherCell.rowNumber && this.columnNumber == otherCell.columnNumber) {
-      return true
+    if (
+      this.rowNumber == otherCell.rowNumber &&
+      this.columnNumber == otherCell.columnNumber
+    ) {
+      return true;
     }
 
-    return false
+    return false;
   }
 
   toString() {

@@ -6,12 +6,12 @@ export const GameModes = {
 }
 
 export const GameModeDescriptions = {
-    "default": "Default Mode: solve the maze in the shortest amount of time",
+    "default": "Default Mode: Solve the maze in the shortest amount of time.",
     "memory": "Memory Mode: \
-                    Starting after 3 seconds has passed \
-                    The maze is visible for 1 second every 5 seconds. \
+                    Starting after 3 seconds has passed, \
+                    the maze is visible for 1 second every 5 seconds. \
                     Try to remember the layout of the maze to solve it in the \
-                    least amount of time",
+                    least amount of time.",
     "frantic": "Frantic Mode: \
                     A random number of walls within the maze shift every three seconds.\
                     Try to avoid getting boxed in to solve the maze in the least \

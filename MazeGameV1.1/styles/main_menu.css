@@ -3,8 +3,17 @@
     visibility: visible;
 }
 
+.test-canvas {
+    display: none;
+    position: absolute;
+    width: 1500px;
+    height: 1500px;
+    background-color: black;
+    z-index: 3;
+    translate: (-50%, -50%);
+}
+
 .main-menu {
-    border: 3px solid black;
     position: absolute;
     width: 100vw;
     height: 100vh;
@@ -13,33 +22,34 @@
 }
 
 .menu-header {
-    border: 3px solid black;
     position: absolute;
     width: 100%;
     height: 15%;
-    background-color: red;
     text-align: center;
 }
 
 .title {
     margin: 0;
-    font-size: 150px;
+    font-size: 300px;
     width: auto;
     height: auto;
     display: block;
+    color: white;
+    text-shadow:
+    5px 5px 5px rgb(205, 198, 58),
+    -5px 5px 5px rgb(212, 73, 73),
+    -5px -5px 5px rgb(68, 194, 56),
+    5px -5px 5px rgb(33, 120, 137);
 }
 
 .menu-page {
-    border: 3px solid black;
     position: absolute;
     top: 15%;
     width: 100%;
     height: 85%;
-    background-color: lightblue;
 }
 
 .menu {
-    border: 3px solid black;
     position: absolute;
     margin-left: auto;
     margin-right: auto;
@@ -50,8 +60,6 @@
     right: 10%;
     width: 80%;
     height: 80%;
-    background-color: pink;
-    
 }
 
 .menu-button-group {
@@ -60,22 +68,24 @@
     margin-left: 15%;
     margin-top: 10%;
     width: auto;
-    height: 50%;
+    height: auto;
 }
 
 
 .menu-button {
     display: flex;
-    width: 500px;
-    height: 200px;
+    width: auto;
+    height: auto;
     font-family: Arial;
-    font-size: 100px;
+    font-size: 200px;
     text-align: center;
+    color: white;
     margin-bottom: 20px;
     cursor: pointer;
     user-select: none;
     border: none;
     background-color: transparent;
+    text-shadow: 5px 5px 15px rgb(130, 234, 255);
 }
 
 .menu-button:hover {

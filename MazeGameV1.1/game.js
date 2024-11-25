@@ -8,6 +8,8 @@ import { GameModes, Difficulties, DifficultyDimensions, MazeColors } from "./uti
 var timer;
 var seconds;
 
+var index = 0
+
 class Game {
     constructor(canvas) {
         this.canvas = canvas
@@ -33,7 +35,7 @@ class Game {
 
         this.gameDuration = 0
         
-        this.fps = 70
+        this.fps = 30
         this.timer = 0
         this.interval = 1000 / this.fps
 
@@ -143,18 +145,24 @@ class Game {
     }
 
     update() {
-        if (this.isPlaying && this.isPaused === false) {
+        if (this.isPlaying && !this.isPaused && !this.isGameOver) {
             this.gameDuration = seconds
             $("#timer").html(`${this.gameDuration}`)
-
             this.player.update()
 
-            if (this.gameDuration !== 0 && this.gameDuration % 3 === 0) {
-                if (this.isRotating === false) this.maze.selectCellsToRotate() 
-                this.maze.rotateCellWalls()
-                this.isRotating = true
-            } else {
-                this.isRotating = false
+            if (this.gameMode == GameModes["franticMode"]) {
+                if (this.gameDuration !== 0 && this.gameDuration % 3 === 0) {
+                    if (index < 90) {
+                        if (this.isRotating === false) this.maze.selectCellsToRotate(); // console.log("SELECT CELLS")
+                            this.isRotating = true
+                            this.maze.rotateCellWalls(); console.log("ROTATE")
+                    } else {
+                        this.isRotating = false
+                    }
+                    index++
+                } else {
+                    index = 0
+                }
             }
         }
     }
@@ -169,11 +177,8 @@ class Game {
         if (this.timer > this.interval) {
             this.timer = 0
             context.clearRect(0, 0, this.gameWidth, this.gameHeight)
-            
-            // console.log(this.gameMode)
-            // console.log(GameModes["memoryMode"])
 
-            if (this.gameMode == GameModes["memoryMode"] && this.gameDuration > 3) {
+            if (this.gameMode == GameModes["memoryMode"] && this.gameDuration > 3 && !this.isGameOver) {
                 if (this.gameDuration % 5 - 3 == 0) {
                     if (this.mazeGenerationComplete) {
                         this.renderMazeAndPlayer(context)

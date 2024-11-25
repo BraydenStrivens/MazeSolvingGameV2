@@ -1,0 +1,9 @@
+
+/* Creates storable variables */
+:root {
+    --text-color: rgb(255, 0, 0);
+}
+
+p {
+    color: var(--text-color)
+}

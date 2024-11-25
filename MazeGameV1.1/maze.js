@@ -21,10 +21,6 @@ class Maze {
 
         this.randomColors = []
         this.wallColor = wallColor
-
-        console.log("WALL COLOR: ", this.wallColor)
-
-        // this.canvas = this.game.canvas
     }
 
     verifyUniqueRandomCell(randomCell) {
@@ -37,13 +33,32 @@ class Maze {
       return true
     }
 
+    verifyNoRotatingNeighbors(randomCell) {
+      if (this.cellsToRotate.length === 0) return true
+
+      let randomRow = randomCell.rowNumber
+      let randomColumn = randomCell.columnNumber
+
+      this.cellsToRotate.forEach((cell) => {
+        let currentRow = cell.rowNumber
+        let currentColumn = cell.columnNumber
+
+        if (Math.abs(randomRow - currentRow) === 1) return false
+        if (Math.abs(randomColumn - currentColumn) === 1) return false
+      })
+
+      return true
+    }
+
     getRandomCell() {
       let randomRowIndex = Math.floor(Math.random() * this.rows)
       let randomColumnIndex = Math.floor(Math.random() * this.columns)
 
       var randomCell = this.grid[randomRowIndex][randomColumnIndex]
 
-      if (this.verifyUniqueRandomCell(randomCell) === false) randomCell = this.getRandomCell()
+      if (this.verifyUniqueRandomCell(randomCell) === false || this.verifyNoRotatingNeighbors(randomCell) === false) {
+        randomCell = this.getRandomCell()
+      }
 
       return randomCell
     }
@@ -81,25 +96,25 @@ class Maze {
     }
 
     rotateCellWalls() {
-      console.log(this.cellsToRotate)
-
+      
       this.cellsToRotate.forEach((cell) => {
         let availableWalls = cell.getShownWalls()
+        // console.log(availableWalls)
         
         if (availableWalls[0]) {
-          cell.rotateTopWall()
+          if (cell.rowNumber !== 0) cell.rotateTopWall()
           return
         }
         if (availableWalls[1]) {
-          cell.rotateRightWall()
+          if (cell.columnNumber !== cell.parentGrid.length - 1) cell.rotateRightWall()
           return
         }
-        if (availableWalls[2]) {
-          cell.rotateBottomWall()
-          return
+        if (availableWalls[2]) { 
+          if (cell.rowNumber !== cell.parentGrid.length - 1) cell.rotateBottomWall()
+          return  
         }
         if (availableWalls[3]) {
-          cell.rotateLeftWall()
+          if (cell.columnNumber !== 0) cell.rotateLeftWall()
           return
         }
       })
@@ -177,7 +192,7 @@ class Maze {
     }
 
     move(e, context) {
-        if (!generation) return;
+        if (!generation || this.game.isGameOver) return;
         let key = e.key;
         let row = this.currentCell.rowNumber;
         let col = this.currentCell.columnNumber;
